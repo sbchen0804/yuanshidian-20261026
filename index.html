@@ -367,15 +367,14 @@
       box-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
     }
 
-    /* 底部預留 65vh 充足緩衝空間，保證排在最下面的卡片也能順利往上移到頂端 */
+    /* 關鍵修正：改為 display: block 搭配底部實體 Spacer，100% 保證任何一張卡片都能往上推到最頂端！ */
     .segment-list {
       flex: 1;
       overflow-y: auto;
-      padding: 10px 10px 65vh 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+      padding: 10px;
+      display: block;
       position: relative;
+      scroll-behavior: smooth;
     }
 
     .segment-list::-webkit-scrollbar { width: 5px; }
@@ -387,7 +386,7 @@
       color: var(--accent-blue);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      padding: 8px 4px 2px;
+      padding: 6px 4px 6px;
       display: flex;
       align-items: center;
       gap: 5px;
@@ -398,6 +397,7 @@
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 8px;
       padding: 10px 12px;
+      margin-bottom: 10px;
       cursor: pointer;
       transition: background-color 0.2s ease, border-color 0.2s ease;
     }
@@ -771,8 +771,7 @@
 
       .segment-list {
         overflow: visible;
-        padding: 8px 10px 65vh 10px;
-        gap: 8px;
+        padding: 8px 10px;
       }
 
       .segment-card {
@@ -1270,36 +1269,38 @@
       scrollCardIntoView(seg.id);
     }
 
-    // 電腦版與手機版皆將目前播放卡片平滑往上推至頂端，若上方有「📂 要點標題」則一併保留顯示，絕不遮擋
+    // 關鍵修正：電腦版與手機版皆將目前播放卡片平滑往上推至頂端，搭配實體 Spacer 100% 置頂成功！
     function scrollCardIntoView(segId) {
-      setTimeout(() => {
-        const activeCard = document.getElementById(`seg-card-${segId}`);
-        if (!activeCard) return;
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          const activeCard = document.getElementById(`seg-card-${segId}`);
+          if (!activeCard) return;
 
-        const prevEl = activeCard.previousElementSibling;
-        const targetEl = (prevEl && prevEl.classList.contains('module-group-title')) ? prevEl : activeCard;
+          // 若該卡片是某個要點的第 1 張卡片，連同上方的「📂 要點標題」一起置頂；若是第 2 張卡片（如 #8），直接把該卡片推到最頂端！
+          const prevEl = activeCard.previousElementSibling;
+          const targetEl = (prevEl && prevEl.classList.contains('module-group-title')) ? prevEl : activeCard;
 
-        if (window.innerWidth <= 900) {
-          const filterBar = document.getElementById('filterBar');
-          const stickyBottom = filterBar ? filterBar.getBoundingClientRect().bottom : (window.innerWidth * 0.5625 + 135);
-          const rect = targetEl.getBoundingClientRect();
-          const targetY = window.pageYOffset + rect.top - stickyBottom - 8;
-          window.scrollTo({
-            top: Math.max(0, targetY),
-            behavior: 'smooth'
-          });
-        } else {
-          const container = document.getElementById('segmentListContainer');
-          if (!container) return;
-          const containerRect = container.getBoundingClientRect();
-          const targetRect = targetEl.getBoundingClientRect();
-          const targetScrollTop = container.scrollTop + (targetRect.top - containerRect.top) - 8;
-          container.scrollTo({
-            top: Math.max(0, targetScrollTop),
-            behavior: 'smooth'
-          });
-        }
-      }, 60);
+          if (window.innerWidth <= 900) {
+            const filterBar = document.getElementById('filterBar');
+            const stickyBottom = filterBar ? filterBar.getBoundingClientRect().bottom : (window.innerWidth * 0.5625 + 135);
+            const rect = targetEl.getBoundingClientRect();
+            const targetY = window.pageYOffset + rect.top - stickyBottom - 8;
+            window.scrollTo({
+              top: Math.max(0, targetY),
+              behavior: 'smooth'
+            });
+          } else {
+            const container = document.getElementById('segmentListContainer');
+            if (!container) return;
+            // 直接使用 offsetTop 計算相對於容器頂端的精確像素距離，100% 推到最頂端
+            const targetScrollTop = Math.max(0, targetEl.offsetTop - 8);
+            container.scrollTo({
+              top: targetScrollTop,
+              behavior: 'smooth'
+            });
+          }
+        }, 50);
+      });
     }
 
     function updateUIForSegment(seg) {
@@ -1442,6 +1443,12 @@
 
         container.appendChild(card);
       });
+
+      // 關鍵實體墊高區塊：確保即使該要點只有 2 張卡片（如 #7、#8），第 2 張卡片也能 100% 往上滑動置頂！
+      const bottomSpacer = document.createElement('div');
+      bottomSpacer.style.height = '85vh';
+      bottomSpacer.style.pointerEvents = 'none';
+      container.appendChild(bottomSpacer);
     }
   </script>
 </body>
