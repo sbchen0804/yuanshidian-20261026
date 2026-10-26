@@ -4,17 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-<!-- 網頁標題與說明 -->
-<title>2026/10/25 張醫師線上課程 主題 : 肩背部技巧及放鬆測試</title>
-<meta name="description" content="新竹市鬆筋健康推廣協會 - 原始點手法研習平台教學輔助工具。主題：2026/10/25 張醫師線上課程 主題 : 肩背部技巧及放鬆測試">
 
-<!-- 社群分享 Open Graph 標籤 (已校正為 yuanshidian-20261026 正確儲存庫名稱) -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="2026/10/25 張醫師線上課程 主題 : 肩背部技巧及放鬆測試">
-<meta property="og:description" content="新竹市鬆筋健康推廣協會 - 原始點手法研習平台教學輔助工具。主題：2026/10/25 張醫師線上課程 主題 : 肩背部技巧及放鬆測試">
-<meta property="og:image" content="https://sbchen0804.github.io/yuanshidian-20261026/logo.png">
-<link rel="icon" type="image/png" href="https://sbchen0804.github.io/yuanshidian-20261026/logo.png">
- 
+  <!-- 網頁標題與說明 -->
+  <title>2026/10/25 張醫師線上課程 主題 : 肩背部技巧及放鬆測試</title>
+  <meta name="description" content="新竹市鬆筋健康推廣協會 - 原始點手法研習平台教學輔助工具。主題：2026/10/25 張醫師線上課程 主題 : 肩背部技巧及放鬆測試">
+
+  <!-- 社群分享 Open Graph 標籤 -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="2026/10/25 張醫師線上課程 主題 : 肩背部技巧及放鬆測試">
+  <meta property="og:description" content="新竹市鬆筋健康推廣協會 - 原始點手法研習平台教學輔助工具。主題：2026/10/25 張醫師線上課程 主題 : 肩背部技巧及放鬆測試">
+  <meta property="og:image" content="https://sbchen0804.github.io/yuanshidian-20261026/logo.png">
+  <link rel="icon" type="image/png" href="https://sbchen0804.github.io/yuanshidian-20261026/logo.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -53,7 +54,7 @@
     }
 
     /* ==============================================================
-       COVER MODAL (登入說明頁面)
+       COVER MODAL (第一頁登入頁，直接讀取根目錄 logo.png)
        ============================================================== */
     .cover-overlay {
       position: fixed;
@@ -223,7 +224,7 @@
     }
 
     /* ==============================================================
-       TOP HEADER (固定頂部導覽列)
+       TOP HEADER (第二頁常駐頂部導覽列，直接讀取根目錄 logo.png)
        ============================================================== */
     header {
       background-color: var(--bg-panel);
@@ -377,7 +378,7 @@
       box-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
     }
 
-    /* 區塊流佈局 + 底部墊高 spacer，確保每一張卡片皆能頂格滾動 */
+    /* 區塊流佈局 + 底部 Spacer */
     .segment-list {
       flex: 1;
       overflow-y: auto;
@@ -793,12 +794,12 @@
 <body>
 
   <!-- ==============================================================
-       COVER PAGE MODAL (由下方統一注入經您驗證 100% 正確的第二頁 Logo)
-       ============================================================== -->
+       COVER PAGE MODAL (直接讀取同目錄下的 logo.png，絕不破圖)
+       ============================================================== */ -->
   <div class="cover-overlay" id="coverOverlay">
     <div class="cover-card">
       <div class="cover-brand-row">
-        <img id="coverLogoImg" alt="新竹市鬆筋健康推廣協會 Logo" class="cover-logo-img">
+        <img src="logo.png" alt="新竹市鬆筋健康推廣協會 Logo" class="cover-logo-img">
         <div class="cover-header">
           <span class="cover-badge">新竹市鬆筋健康推廣協會 · 研習教材</span>
           <h2>2026 張醫師原始點肩背部技巧及放鬆測試</h2>
@@ -854,10 +855,10 @@
     </div>
   </div>
 
-  <!-- Top Header (第二頁常駐頂部導覽列) -->
+  <!-- Top Header (第二頁常駐頂部導覽列，直接讀取 logo.png) -->
   <header>
     <div class="brand">
-      <img id="headerLogoImg" src="data:image/png;base64,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" alt="新竹鬆筋 Logo" class="header-logo-mini">
+      <img src="logo.png" alt="新竹鬆筋 Logo" class="header-logo-mini">
       <div class="title-box">
         <h1>張醫師肩背部技巧及放鬆測試</h1>
       </div>
@@ -867,11 +868,6 @@
       <button class="btn-header-carousel" onclick="startCarouselFromFirst()" id="topCarouselBtn">🔄 全部輪播播放</button>
     </div>
   </header>
-
-  <script>
-    // 立即將第二頁已驗證 100% 正確無誤的 Logo 同步賦予第一頁登入頁，保證兩頁絕對一致無亂碼
-    document.getElementById('coverLogoImg').src = document.getElementById('headerLogoImg').src;
-  </script>
 
   <!-- App Body -->
   <div class="app-body">
@@ -1364,7 +1360,7 @@
       }
     }
 
-    // 全部輪播重置從 #1 開始
+    // 點擊「全部輪播」：100% 嚴格重置從第 1 段開始連續播放
     function startCarouselFromFirst() {
       isTransitioning = false;
       currentMode = 'all';
@@ -1384,7 +1380,6 @@
       selectSegment(segments[0], true);
     }
 
-    // 分組切換：支援要點一～要點四連續播放
     function setMode(modeKey, chipEl) {
       isTransitioning = false;
       document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
@@ -1410,7 +1405,6 @@
       }
     }
 
-    // 動態繪製卡片
     function renderSegmentList(dataList) {
       const container = document.getElementById('segmentListContainer');
       container.innerHTML = '';
