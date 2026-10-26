@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>原始點手法與教學平台 - 肩背部技巧及放鬆測試 (2026)</title>
+  <style>
+    :root {
+      --primary: #108e66;
+      --primary-dark: #095c42;
+      --primary-light: #e6f6f0;
+      --accent: #d97706;
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --danger-bg: #fef2f2;
+      --danger-border: #fecaca;
+      --danger-text: #991b1b;
+      --success-bg: #f0fdf4;
+      --success-border: #bbf7d0;
+      --success-text: #166534;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: white;
+      padding: 1.25rem 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-content {
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .header-title h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .header-title p {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    .header-tools {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .search-input {
+      padding: 0.45rem 0.9rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.15);
+      color: white;
+      font-size: 0.85rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-input::placeholder { color: rgba(255,255,255,0.7); }
+    .search-input:focus {
+      background: rgba(255,255,255,0.3);
+      border-color: white;
+    }
+
+    /* 主架構佈局 */
+    .container {
+      max-width: 1600px;
+      margin: 1.5rem auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: 500px 1fr;
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    @media (min-width: 1200px) {
+      .container { grid-template-columns: 580px 1fr; }
+    }
+
+    @media (max-width: 1024px) {
+      .container { grid-template-columns: 1fr; }
+    }
+
+    /* 左側播放器面板 */
+    .sticky-player-panel {
+      position: sticky;
+      top: 85px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .video-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 */
+      background: #000;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .player-status {
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.15); }
+      100% { opacity: 0.4; transform: scale(0.9); }
+    }
+
+    .module-filter-bar {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+
+    .filter-btn {
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* 右側教材卡片列表 */
+    .slides-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .slide-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 1.5rem;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .slide-card.active-playing {
+      border: 2px solid var(--primary);
+      box-shadow: 0 6px 20px rgba(16, 142, 102, 0.15);
+      background: #fafefd;
+    }
+
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+
+    .slide-title-group h3 {
+      font-size: 1.15rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .slide-tag {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+
+    .timestamp-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background 0.2s;
+    }
+
+    .timestamp-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    /* 對比方塊 */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 640px) {
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+
+    .compare-box {
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .compare-box.error {
+      background: var(--danger-bg);
+      border-left: 4px solid var(--danger-border);
+      color: var(--danger-text);
+    }
+
+    .compare-box.correct {
+      background: var(--success-bg);
+      border-left: 4px solid var(--success-border);
+      color: var(--success-text);
+    }
+
+    .compare-title {
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .slide-details {
+      background: #fdfdfd;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .slide-details ul {
+      padding-left: 1.25rem;
+      margin-top: 0.35rem;
+    }
+
+    .slide-quote {
+      border-left: 3px solid var(--accent);
+      background: #fffbeb;
+      padding: 0.65rem 1rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.85rem;
+      color: #92400e;
+      font-style: italic;
+    }
+
+    .now-tag {
+      display: none;
+      font-size: 0.7rem;
+      background: var(--primary);
+      color: white;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      margin-left: 0.5rem;
+    }
+
+    .slide-card.active-playing .now-tag {
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div class="header-title">
+        <h1>原始點手法與教學互動平台</h1>
+        <p>2026/10/25 肩背部技巧及放鬆測試教學專用</p>
+      </div>
+      <div class="header-tools">
+        <input type="text" id="searchInput" class="search-input" placeholder="搜尋關鍵字（如：肉墊、沉降、磨皮）...">
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- 左側視訊播放器 -->
+    <aside class="sticky-player-panel">
+      <div class="video-card">
+        <div class="video-wrapper">
+          <div id="player"></div>
+        </div>
+        <div class="player-status">
+          <div class="status-badge">
+            <span class="status-dot"></span>
+            <span id="currentStatusText">播放器就緒 (NYZU0LHmFwA)</span>
+          </div>
+          <span id="currentTimeDisplay" style="color: var(--text-muted); font-family: monospace;">00:00</span>
+        </div>
+      </div>
+
+      <!-- 分類標籤快速切換 -->
+      <div class="module-filter-bar">
+        <button class="filter-btn active" onclick="filterModule('all', this)">全部模組</button>
+        <button class="filter-btn" onclick="filterModule('1', this)">模組 1：穿透力學</button>
+        <button class="filter-btn" onclick="filterModule('2', this)">模組 2：幾何下盤</button>
+        <button class="filter-btn" onclick="filterModule('3', this)">模組 3：接觸解剖</button>
+        <button class="filter-btn" onclick="filterModule('4', this)">模組 4：標準化檢驗</button>
+      </div>
+    </aside>
+
+    <!-- 右側教材投影片列表 -->
+    <section class="slides-container" id="slidesList">
+      <!-- 內容將由 JavaScript 依教材結構動態產生 -->
+    </section>
+  </main>
+
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    // 教材資料結構
+    const courseData = [
+      {
+        id: "slide-1",
+        module: "1",
+        slideNum: "Slide 1",
+        title: "思維與肢體徹底分離（切斷操控意識）",
+        startSec: 70, // 01:10
+        endSec: 145,
+        displayTime: "01:10 - 02:25",
+        errorDesc: "大腦強烈主導手部動作，導致手臂與肩膀神經反射性武裝，看似放鬆實則為僵硬硬壓。",
+        correctDesc: "觸皮剎那大腦與肢體徹底切斷，雙手與工具如同「完全死掉」般卸除所有主觀力量。",
+        details: [
+          "肩膀與上身在接觸前完全放掉緊繃感，停止發出「用力按」的神經訊號。",
+          "受作者感受到純粹重力自然貼合，無任何機械性抵抗或硬性壓迫。"
+        ],
+        quote: "到了這一剎那的時候，連這裡跟手一樣，都已經都死掉了！如果是腦袋在指揮你的手，那個手都是硬的，不可能輕鬆。"
+      },
+      {
+        id: "slide-2",
+        module: "1",
+        slideNum: "Slide 2",
+        title: "自由落體與落差深淺（穿透力的真實來源）",
+        startSec: 145, // 02:25
+        endSec: 270,
+        displayTime: "02:25 - 04:30",
+        errorDesc: "誤以為按得深必須依靠手臂發力或身體下壓，力量卡在表層或中層，造成受作者劇痛或骨挫傷。",
+        correctDesc: "手部力量徹底卸除，由軀幹與工具同步向下墜落形成的「垂直落差幅度」決定滲透深淺。",
+        details: [
+          "雙手與腹部（腰部）形成三位一體，如同自由落體般垂直沉降。",
+          "藉由沉降幅度精準控制表、中、深層穿透力，外觀維持自然平靜看不出出力。"
+        ],
+        quote: "『落差』決定了我的深淺……直接像自由落體，全部沉下來所產生的落差。落差越大，它的力度就越大。"
+      },
+      {
+        id: "slide-3",
+        module: "1",
+        slideNum: "Slide 3",
+        title: "決勝在按，推是延伸（動態操作的主次邏輯）",
+        startSec: 45, // 00:45
+        endSec: 110,
+        displayTime: "00:45 - 01:50",
+        errorDesc: "按不進去卻在表皮摩擦（磨皮），推動時肩膀高低聳動、身體起伏拉扯，導致力量浮起脫節。",
+        correctDesc: "穿透力完全由「按」決定，推僅是微幅輔助；沉入深層後力量固定不再提起來。",
+        details: [
+          "手肘關節負責極微幅往復柔和擺動，肩膀與上半身如基座般沉穩不動。",
+          "施作者消耗極低體能熱量，受作者體內完全不產生防禦性抗拒抵抗。"
+        ],
+        quote: "最主要那個力量，它真正在決勝負是在『按』，反而不是在『推』。推，只是讓我更確定你的按不及格而已！"
+      },
+      {
+        id: "slide-4",
+        module: "1",
+        slideNum: "Slide 4",
+        title: "觸皮即鬆的關鍵瞬間（避免脫節與壓迫）",
+        startSec: 345, // 05:45
+        endSec: 430,
+        displayTime: "05:45 - 07:10",
+        errorDesc: "接觸皮膚壓到底部後才補做放鬆動作，形成嚴重的「先壓後鬆」骨骼磨損與脫節感。",
+        correctDesc: "在剛碰觸到皮膚彈力的那一剎那，全身三位一體同步鬆開垮下，一氣呵成沉入深層。",
+        details: [
+          "觸皮剎那兩手高低一致，不可一前一後或單側緊繃。",
+          "工具與皮膚彈性連在一起同步沉降，沉降過程毫無波折起伏。"
+        ],
+        quote: "剛剛接觸到皮膚的時候，就整個都鬆下來了。你看沉下來怎麼會有起伏？……接觸到皮膚那一剎那，放下去兩手，然後包括腰，三位一體一起！"
+      },
+      {
+        id: "slide-5",
+        module: "2",
+        slideNum: "Slide 5",
+        title: "操作幾何極限（肘尖不超肩與前方不超 90 度）",
+        startSec: 850, // 14:10
+        endSec: 975,
+        displayTime: "14:10 - 16:15",
+        errorDesc: "肘尖向外飛出超過肩寬形成斜向虛力；手臂向前伸展超過 90 度迫使以手臂蠻力硬壓。",
+        correctDesc: "肘尖始終收在自身肩線之內；向前操作嚴格維持在胸前 90 度範圍內，確保重力垂直向下貫穿。",
+        details: [
+          "橫向肘尖不超肩、縱向前伸不超過前胸 90 度弧形範圍。",
+          "若操作點向前延伸，身體步伐必須主動跟上拉近距離，維持胸前操作黃金角度。"
+        ],
+        quote: "肘尖不要超過你那個肩膀……一旦超離，你下去的時候，它這種斜線下來是沒力的！……往前盡量不要超過 90 度。"
+      },
+      {
+        id: "slide-6",
+        module: "2",
+        slideNum: "Slide 6",
+        title: "下盤連動與開架身法（以步帶身、杜絕夾死硬壓）",
+        startSec: 1050, // 17:30
+        endSec: 1245,
+        displayTime: "17:30 - 20:45",
+        errorDesc: "臀部以下僵死不動，僅靠上半身扭轉操作；雙臂將胸前夾死憋氣硬壓，受作者胸口憋悶難受。",
+        correctDesc: "如打拳開架般開展雙臂，藉由髂骨帶動雙腿靈活轉向；身體正對操作面，手部自然放鬆柔軟。",
+        details: [
+          "以胯帶腿流暢變換站姿角度，胸前永遠保持寬闊舒適的開架空間。",
+          "定位後身體順勢自然向下墜落帶動工具，不使用手臂內縮蠻力。"
+        ],
+        quote: "我是從這裡胯、髂骨以下的腿，我都隨著我的身體在轉……就像打拳，我已經這裡張開了。但你們是這樣打拳，這裡已經把自己夾死了！夾死了之後再壓，力量不一樣！"
+      },
+      {
+        id: "slide-7",
+        module: "3",
+        slideNum: "Slide 7",
+        title: "接觸面解剖定位（尺骨下肉墊與手心朝下）",
+        startSec: 765, // 12:45
+        endSec: 850,
+        displayTime: "12:45 - 14:10",
+        errorDesc: "使用肘尖鷹嘴突骨質硬碰骨頭；手心翻轉向上導致骨角外露刮傷肌腱或造成強烈銳痛。",
+        correctDesc: "嚴格使用尺骨突起下方那塊豐厚的肌肉（肉墊）接觸，手心朝下，以彈性肌肉帶動深透力量。",
+        details: [
+          "以尺骨鷹嘴突下方約 1~2 指寬的豐厚肌群緊密貼合皮膚。",
+          "手腕自然放鬆、手心朝下平放，杜絕旋轉外翻動作。"
+        ],
+        quote: "骨頭的下面這一塊肉是我最常用的……這樣整個推過去，這個就有彈性。對，如果用這一面的話，骨頭會碰骨頭……手心是朝下的。"
+      },
+      {
+        id: "slide-8",
+        module: "3",
+        slideNum: "Slide 8",
+        title: "重症打地基（塗薑粉泥的深層透熱解症）",
+        startSec: 900, // 15:00
+        endSec: 990,
+        displayTime: "15:00 - 16:30",
+        errorDesc: "誤以為塗薑粉泥可忽視身法架構，大範圍揮舞手臂過度前伸，熱力浮於表皮且患者產生窒息感。",
+        correctDesc: "塗薑粉泥是基本功極致展現；透過步法移位與身法開架垂直沉降，將溫熱深透體內打好深層地基。",
+        details: [
+          "塗抹時嚴格維持肘不超肩、前臂不超 90 度，步隨手走。",
+          "垂直下沉帶動深層溫熱滲透，精準舒緩深層體傷痛點救命解症。"
+        ],
+        quote: "只要一塗薑粉泥，以為什麼架構都可以不要，恰恰相反！基本功你學會了就是再來塗薑粉泥……大部分都是重症、打地基！真正體傷都在深層，你們就少了那種解症的功效。"
+      },
+      {
+        id: "slide-9",
+        module: "4",
+        slideNum: "Slide 9",
+        title: "放鬆檢驗標準化（雙人對練規範與嚴禁自測）",
+        startSec: 560, // 09:20
+        endSec: 765,
+        displayTime: "09:20 - 12:45",
+        errorDesc: "學員在自己手臂自測；測試時將手預先放死僵硬，造成撞擊崩塌感，或兩手一高一低受力不均。",
+        correctDesc: "必須採雙人對練測試，檢驗者前臂感受受測者兩側是否同步沉降卸力，絕不可自測。",
+        details: [
+          "受測者雙手平放於檢測者前臂上方，檢驗觸皮剎那是否雙側均勻同步自然卸力垮下。",
+          "自測必然引發自我代償、架構變形，完全失去客觀檢測標準。"
+        ],
+        quote: "自己做不出來！自己做不出來……架構就失去意義！你架構錯，你又鬆不下來……按您說的三位一體，只要這個不鬆就是錯的！對，它要同時才能夠透進去。"
+      },
+      {
+        id: "slide-10",
+        module: "4",
+        slideNum: "Slide 10",
+        title: "教學突破與傳承視野（破除資歷迷思與起點思維）",
+        startSec: 225, // 03:45
+        endSec: 345,
+        displayTime: "03:45 - 05:45",
+        errorDesc: "盲信「學越久越厲害」，以年資掩蓋技術盲點；或認為單一重症（如阿連案例）透進去即代表大功告成。",
+        correctDesc: "關鍵在於敏銳領悟與修正多餘動作；突破單一病歷僅是實戰「起點」，追求任何人隨時皆能重現的傳承標準。",
+        details: [
+          "輕症手法柔和舒適，重症手法深透有力，外表皆保持自然放鬆、無蠻力痕跡。",
+          "唯有手法在客觀架構與放鬆測試上達到標準化，原始點技術方能具備可複製、可驗證的傳承價值。"
+        ],
+        quote: "這個不是學越久越厲害！……如果是這樣，原始點就完蛋。而是怎麼樣？你的領悟力，還有你勤於學習，然後勤於觀察，然後把一些不必要的動作修正……阿連是一例，這個才叫『剛剛開始』！"
+      }
+    ];
+
+    let player;
+    let updateInterval;
+    const YOUTUBE_VIDEO_ID = 'NYZU0LHmFwA'; // 預設使用您的 YouTube 影片
+
+    // 1. 動態渲染教材列表
+    function renderSlides(items) {
+      const container = document.getElementById('slidesList');
+      container.innerHTML = '';
+
+      items.forEach(slide => {
+        const card = document.createElement('article');
+        card.className = 'slide-card';
+        card.id = slide.id;
+        card.dataset.module = slide.module;
+        card.dataset.start = slide.startSec;
+        card.dataset.end = slide.endSec;
+
+        card.innerHTML = `
+          <div class="slide-header">
+            <div class="slide-title-group">
+              <h3>
+                <span class="slide-tag">${slide.slideNum}</span>
+                ${slide.title}
+                <span class="now-tag">🟢 現正播放</span>
+              </h3>
+            </div>
+            <button class="timestamp-btn" onclick="seekToTime(${slide.startSec}, '${slide.id}')">
+              ▶ ${slide.displayTime}
+            </button>
+          </div>
+
+          <div class="compare-grid">
+            <div class="compare-box error">
+              <div class="compare-title">⚠️ 常見錯誤（阻礙放鬆）</div>
+              <div>${slide.errorDesc}</div>
+            </div>
+            <div class="compare-box correct">
+              <div class="compare-title">✅ 正確要領（自然深透）</div>
+              <div>${slide.correctDesc}</div>
+            </div>
+          </div>
+
+          <div class="slide-details">
+            <strong>🎯 操作與身法細節：</strong>
+            <ul>
+              ${slide.details.map(d => `<li>${d}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="slide-quote">
+            💬 <strong>張醫師核心語錄：</strong>「${slide.quote}」
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // 2. 初始化 YouTube API
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        videoId: YOUTUBE_VIDEO_ID,
+        playerVars: {
+          'playsinline': 1,
+          'rel': 0,
+          'modestbranding': 1
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    function onPlayerReady(event) {
+      document.getElementById('currentStatusText').textContent = '播放器就緒，點選教材跳轉';
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.PLAYING) {
+        document.getElementById('currentStatusText').textContent = '正在播放教學示範';
+        if (!updateInterval) {
+          updateInterval = setInterval(checkCurrentPlayback, 800);
+        }
+      } else {
+        if (event.data === YT.PlayerState.PAUSED) {
+          document.getElementById('currentStatusText').textContent = '播放已暫停';
+        }
+        clearInterval(updateInterval);
+        updateInterval = null;
+      }
+    }
+
+    // 3. 點擊跳轉指定秒數
+    function seekToTime(seconds, cardId) {
+      if (player && player.seekTo) {
+        player.seekTo(seconds, true);
+        player.playVideo();
+        highlightActiveCard(cardId);
+      }
+    }
+
+    // 4. 定時檢查播放秒數並反白高亮教材
+    function checkCurrentPlayback() {
+      if (!player || !player.getCurrentTime) return;
+      const currentSec = Math.floor(player.getCurrentTime());
+      
+      // 更新秒數顯示
+      const m = String(Math.floor(currentSec / 60)).padStart(2, '0');
+      const s = String(currentSec % 60).padStart(2, '0');
+      document.getElementById('currentTimeDisplay').textContent = `${m}:${s}`;
+
+      // 檢查哪張卡片處於播放區間
+      const matched = courseData.find(slide => currentSec >= slide.startSec && currentSec < slide.endSec);
+      if (matched) {
+        highlightActiveCard(matched.id, false);
+      }
+    }
+
+    function highlightActiveCard(cardId, shouldScroll = true) {
+      document.querySelectorAll('.slide-card').forEach(card => {
+        if (card.id === cardId) {
+          if (!card.classList.contains('active-playing')) {
+            card.classList.add('active-playing');
+            if (shouldScroll) {
+              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }
+        } else {
+          card.classList.remove('active-playing');
+        }
+      });
+    }
+
+    // 5. 分類過濾模組
+    function filterModule(moduleId, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.slide-card');
+      cards.forEach(card => {
+        if (moduleId === 'all' || card.dataset.module === moduleId) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // 6. 關鍵字搜尋過濾
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+      const term = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('.slide-card').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(term) ? 'block' : 'none';
+      });
+    });
+
+    // 初始載入卡片
+    renderSlides(courseData);
+  </script>
+</body>
+</html>
